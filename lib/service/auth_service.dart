@@ -28,13 +28,13 @@ class AuthService{
   }
 
   Future<UserCredential> signUpWithEmail(
-    String email,
-    String pass,
-    String name,
+   { String? email,
+    String? pass,
+    String? name,}
   ) async {
     try {
       UserCredential user = await auth.createUserWithEmailAndPassword(
-          email: email, password: pass);
+          email: email!, password: pass!);
       final UserModel userdata =
           UserModel(email: email, userName: name, id: user.user!.uid);
 
@@ -45,6 +45,18 @@ class AuthService{
       return user;
     } on FirebaseAuthException catch (e) {
       throw Exception(e.code);
+    }
+  }
+  
+  Future<void> signOut(BuildContext context) async {
+    try {
+      await auth.signOut();
+      //Navigator.of(context).pushReplacementNamed('/login');
+    } catch (e) {
+      print('Error signing out: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out')),
+      );
     }
   }
 }

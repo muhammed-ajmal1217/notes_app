@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notesapp_task/main_widgets/toggle_auth.dart';
+import 'package:notesapp_task/main_widgets/toggle_screen.dart';
 import 'package:notesapp_task/views/home.dart';
 
 class AuthGatePage extends StatefulWidget {
@@ -21,11 +22,21 @@ class _AuthGatePageState extends State<AuthGatePage> {
   Widget build(BuildContext context) {
     return _isLoggedIn ? HomePage() : ToggleAuth();
   }
-  checkLoggedInStatus() async {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? user = auth.currentUser;
-  setState(() {
-    _isLoggedIn = user != null;
-  });
-}
+
+  void checkLoggedInStatus() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user = auth.currentUser;
+    if (user != null) {
+      setState(() {
+        _isLoggedIn = true;
+      });
+      // Delay the navigation until after the build is complete
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      });
+    }
   }
+}

@@ -5,15 +5,17 @@ import 'package:notesapp_task/service/auth_service.dart';
 class FireStoreService {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   AuthService auth = AuthService();
- addNotes({String? title, String? note}) async {
+addNotes({String? title, String? note, int? color}) async {
   DocumentReference docRef = firestore
       .collection('users')
       .doc(auth.auth.currentUser!.uid)
       .collection('notes')
       .doc();
-  NotesModel notes = NotesModel(title: title, notes: note,id: docRef.id);
+  NotesModel notes =
+      NotesModel(title: title, notes: note, id: docRef.id, color: color);
   await docRef.set(notes.toJson());
 }
+
 
 
   Stream<List<NotesModel>> getNotes() {
@@ -40,7 +42,8 @@ Future<void> deleteNote(String documentId) async {
     print('Error deleting note: $error');
   }
 }
- updateNotes({String? documentId, String? newTitle, String? newNote}) async {
+updateNotes(
+    {String? documentId, String? newTitle, String? newNote, int? newColor}) async {
   try {
     await firestore
         .collection('users')
@@ -48,14 +51,16 @@ Future<void> deleteNote(String documentId) async {
         .collection('notes')
         .doc(documentId!)
         .update({
-          'title': newTitle,
-          'notes': newNote,
-        });
+      'title': newTitle,
+      'notes': newNote,
+      'color': newColor,
+    });
     print('Note updated successfully');
   } catch (error) {
     print('Error updating note: $error');
   }
 }
+
 
 
 }

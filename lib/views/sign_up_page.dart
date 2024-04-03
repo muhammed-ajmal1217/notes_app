@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp_task/main_widgets/text_field.dart';
 import 'package:notesapp_task/main_widgets/toggle_screen.dart';
 import 'package:notesapp_task/service/auth_service.dart';
@@ -23,55 +24,72 @@ class _SignUpPageState extends State<SignUpPage> {
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.black,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'Sign up',
-            style: TextStyle(
-                color: Colors.blue, fontSize: 25, fontWeight: FontWeight.bold),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 130,),
+            Text(
+              'Sign up',
+              style: GoogleFonts.raleway(
+                  color: Colors.blue, fontSize: 25, fontWeight: FontWeight.bold),
+            ),
+            Text('Please fill out the following required fields',style: GoogleFonts.raleway(color: white),),
+            TextFieldWidget(hintText: 'Name', controller: nameController),
+            // TextFieldWidget(hintText: 'E-mail', controller: emailController),
+            Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: TextFormField(
+        style: TextStyle(color: Colors.white),
+        controller: emailController,
+        decoration: InputDecoration(
+          hintStyle: TextStyle(color: Colors.grey),
+          hintText: 'E-mail',
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-          Text('Please fill out the following required fields',style: TextStyle(color: white),),
-          TextFieldWidget(hintText: 'Name', controller: nameController),
-          TextFieldWidget(hintText: 'E-mail', controller: emailController),
-          TextFieldWidget(
-              hintText: 'Password', controller: passwordController),
-          TextFieldWidget(
-              hintText: 'Confirm password', controller: confirmController),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InkWell(
-                onTap: () {
-                  signUp();
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(100),
-                      color: Colors.blue,
+        ),
+      ),
+    ),
+
+            TextFieldWidget(
+                hintText: 'Password', controller: passwordController),
+            TextFieldWidget(
+                hintText: 'Confirm password', controller: confirmController),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    signUp();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        color: Colors.blue,
+                      ),
+                      child: Center(child: Text('Sign up',style:GoogleFonts.raleway(color: white,fontSize: 20,fontWeight: FontWeight.w500),)),
                     ),
-                    child: Center(child: Text('Sign up',style:TextStyle(color: white,fontSize: 20,fontWeight: FontWeight.w500),)),
                   ),
                 ),
-              ),
-              SizedBox(
-                width: width * 0.05,
-              ),
-              ToggleScreen(
-                screenHeight: height,
-                screenWidth: width,
-                toggleScreen: () => widget.showLogin(),
-                text1: 'login with an existing account',
-                text2: 'Login',
-              ),
-            ],
-          )
-        ],
+                SizedBox(
+                  width: width * 0.05,
+                ),
+                ToggleScreen(
+                  screenHeight: height,
+                  screenWidth: width,
+                  toggleScreen: () => widget.showLogin(),
+                  text1: 'login with an existing account',
+                  text2: 'Login',
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -81,6 +99,6 @@ class _SignUpPageState extends State<SignUpPage> {
           .showSnackBar(SnackBar(content: Text('Not Match')));
     }
     AuthService().signUpWithEmail(
-        emailController.text, passwordController.text, nameController.text);
+        email: emailController.text.trim(),pass: passwordController.text.trim(),name: nameController.text.trim());
   }
   }

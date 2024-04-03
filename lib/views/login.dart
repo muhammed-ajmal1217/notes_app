@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:notesapp_task/main_widgets/text_field.dart';
 import 'package:notesapp_task/main_widgets/toggle_screen.dart';
 import 'package:notesapp_task/service/auth_service.dart';
@@ -25,19 +27,20 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          Icon(Icons.lock_outline,color: Colors.white,size: 50,),
           Text('Login',
-              style: TextStyle(
+              style: GoogleFonts.raleway(
                   color: Colors.blue,
                   fontSize: 35,
                   fontWeight: FontWeight.bold)),
-          Text('Please Enter the E-mail and password',style: TextStyle(color: white),),
+          Text('Please Enter the E-mail and password',style: GoogleFonts.raleway(color: white),),
           TextFieldWidget(controller: emailController, hintText: 'E-mail'),
           TextFieldWidget(
               controller: passwordController, hintText: 'Password'),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              InkWell(
+              GestureDetector(
                 onTap: login,
                 
                 child: Padding(
@@ -49,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(100),
                       color: Colors.amber,
                     ),
-                    child: Center(child: Text('Login',style:TextStyle(color: white,fontSize: 20,fontWeight: FontWeight.w500),)),
+                    child: Center(child: Text('Login',style:GoogleFonts.raleway(color: white,fontSize: 20,fontWeight: FontWeight.w500),)),
                   ),
                 ),
               ),
@@ -68,8 +71,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 login()async{
-  final email = emailController.text;
-  final password = passwordController.text;
+  final email = emailController.text.trim();
+  final password = passwordController.text.trim();
   if(email.isNotEmpty&&password.isNotEmpty){
     await AuthService().signInWithEmail(email, password, context);
   }else{
